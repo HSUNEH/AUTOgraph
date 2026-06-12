@@ -1,0 +1,42 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "autograph-agent"
+version = "0.1.0"
+description = "Agent-ready document autograph placement for PDF, DOCX, HWP, and HWPX workflows."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "HSUNEH" }]
+keywords = ["pdf", "docx", "hwp", "hwpx", "signature", "document-automation", "autograph"]
+dependencies = [
+  "click>=8.1",
+  "pydantic>=2.7",
+  "pypdf>=5.0",
+  "reportlab>=4.2",
+  "python-docx>=1.1",
+  "pillow>=10.4",
+]
+
+[project.optional-dependencies]
+hwp = ["hwp-hwpx-parser>=1.0.0"]
+dev = ["pytest>=8.2", "ruff>=0.6"]
+
+[project.scripts]
+autograph = "autograph.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/autograph"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
