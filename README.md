@@ -7,6 +7,7 @@ AUTOgraph scans incoming PDF, DOCX, HWP, and HWPX documents for signer cues such
 ## MVP status
 
 - PDF: text extraction, placeholder detection, visual autograph stamp overlay. Fails closed if a placeholder cannot be mapped to PDF coordinates.
+- PDF multi-page: repeated placeholders for the same signer are stamped across all detected pages; batch API supports multiple registered signers in one pass.
 - DOCX: placeholder detection and inline autograph image replacement, including placeholders split across Word runs.
 - HWPX: bounded ZIP/XML text extraction and signer detection. Writing is routed through the conversion pipeline in the CLI roadmap.
 - HWP: optional parser hook for text extraction when `hwp-hwpx-parser` is installed; write support is planned through HWPX/PDF conversion.
@@ -24,6 +25,21 @@ pipx install .
 ```bash
 autograph inspect contract.pdf
 autograph sign contract.pdf --signer "Alice Kim" --signature ~/.signatures/alice.png --output signed.pdf
+```
+
+Python batch signing:
+
+```python
+from autograph.signers.pdf import sign_pdf_batch
+
+sign_pdf_batch(
+    "contract.pdf",
+    "signed.pdf",
+    signatures={
+        "Alice Kim": "~/.signatures/alice.png",
+        "Bob Lee": "~/.signatures/bob.png",
+    },
+)
 ```
 
 ## Placeholder conventions
